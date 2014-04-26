@@ -109,4 +109,34 @@
 	    (custom-available-themes))
       (load-theme current-theme))))
 
+(ert-deftest tl-test:adding-customization ()
+  (let ((current-theme (car custom-enabled-themes))
+	(current-face-height (face-attribute 'default 
+					     :height)))
+    (unwind-protect
+	(progn
+	   (message (concatenate 'string 
+			  "current-face-height: "
+			  (number-to-string current-face-height)))
+	  (tl:set-theme-set (list 'wombat
+				  'tango-dark
+				  'wheatgrass))
+	;Should apply customizations when specified
+	  (load-theme 'tango)
+	  (tl:set-customizations (lambda ()
+				   (set-face-attribute 'default nil 
+						       :height 120)))
+	  (tl:enable-next-theme)
+	  (message (concatenate 'string 
+			  "found face-height: "
+			  (number-to-string (face-attribute 'default :height))))
+	  (should (< (abs  (- (face-attribute 'default :height)
+			      120))
+		     2)))
+      (setq tl:favorite-themes 
+	    (custom-available-themes))
+      (load-theme current-theme)
+      (set-face-attribute 'default nil 
+			  :height current-face-height))))
+
 ;;; theme-looper-tests.el ends here

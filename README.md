@@ -32,6 +32,10 @@ Set up your key-bindings:
 
     (global-set-key (kbd "C-\"") 'tl:enable-next-theme)
 
+Optional: Set additional customization to be applied after every theme switch:
+
+    (tl:set-customizations 'my-func)
+
 ## Let me know
 Let me know your suggestions on improving 'theme-looper.el' at ismail@teamfluxion.com
 
