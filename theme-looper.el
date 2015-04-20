@@ -110,6 +110,7 @@
   (mapcar 'disable-theme
 	  custom-enabled-themes))
 
+;;;###autoload
 (defun theme-looper-enable-next-theme ()
   "Enables the next color-theme in the list"
   (interactive)
@@ -121,6 +122,7 @@
 			  "Switched to theme: "
 			  (symbol-name theme-looper-next-theme)))))
 
+;;;###autoload
 (defun theme-looper-enable-random-theme ()
   "Enables a random theme from the list"
   (interactive)
