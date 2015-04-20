@@ -70,11 +70,13 @@
 (defun theme-looper--further-customize
   nil)
 
+;;;###autoload
 (defun theme-looper-set-theme-set (themes)
   "Sets the list of color-themes to cycle thru"
   (setq theme-looper--favorite-themes 
 	themes))
 
+;;;###autoload
 (defun theme-looper-set-customizations (func)
   "Sets customization to be applied after every theme switch"
   (fset 'theme-looper--further-customize
