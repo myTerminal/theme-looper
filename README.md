@@ -1,4 +1,4 @@
-# theme-looper.el
+# theme-looper.el [![MELPA](http://melpa.org/packages/theme-looper-badge.svg)](http://melpa.org/#/theme-looper)
 
 A color-theme looper for Emacs 24.
 
