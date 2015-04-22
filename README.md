@@ -1,4 +1,4 @@
-# theme-looper.el [![MELPA](http://melpa.org/packages/theme-looper-badge.svg)](http://melpa.org/#/theme-looper)
+# theme-looper [![MELPA](http://melpa.org/packages/theme-looper-badge.svg)](http://melpa.org/#/theme-looper)
 
 A color-theme looper for Emacs 24.
 
@@ -11,7 +11,9 @@ Emacs 24 comes with a set of pre-installed color-themes that can be enabled by a
     
 The above command enables (rather activates) 'wombat' theme. However, when you get lazy like I did, you need something like theme-looper.el. So, if you have a list of your favorite color-themes and you want to cycle thru them with simple key-strokes, you've come to the right place.
 
-## Usage
+## Installation
+
+### Manual
 
 Save the file 'theme-looper.el' to disk and add the directory containing it to 'load-path' using a command in your '.emacs' file like:
 
@@ -22,6 +24,14 @@ The above line assumes that you've placed the file into the Emacs directory '.em
 Start the package with:
 
     (require 'theme-looper)
+
+### MELPA
+
+If you have MELPA added as a repository to your Emacs, you can just install *theme-looper* with
+
+    M-x package-install theme-looper RET
+
+## Usage
 
 Optional: Set your list of favorite color themes:
 
