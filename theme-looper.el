@@ -116,14 +116,21 @@
 	  custom-enabled-themes))
 
 ;;;###autoload
+(defun theme-looper-enable-theme (theme)
+  "Enables the specified color-theme"
+  (theme-looper--disable-all-themes)
+  (load-theme theme
+              t)
+  (theme-looper--further-customize)
+    (message "Switched to theme: %s"
+             theme-looper-next-theme))
+
+;;;###autoload
 (defun theme-looper-enable-next-theme ()
   "Enables the next color-theme in the list"
   (interactive)
   (let ((theme-looper-next-theme (theme-looper--get-next-theme)))
-    (theme-looper--disable-all-themes)
-    (load-theme theme-looper-next-theme t)
-    (theme-looper--further-customize)
-    (message "Switched to theme: %s" theme-looper-next-theme)))
+    (theme-looper-enable-theme theme-looper-next-theme)))
 
 ;;;###autoload
 (defun theme-looper-enable-random-theme ()
@@ -131,11 +138,7 @@
   (interactive)
   (let ((theme-looper-next-theme (nth (random (length theme-looper--favorite-themes))
                             theme-looper--favorite-themes)))
-    (theme-looper--disable-all-themes)
-    (load-theme theme-looper-next-theme
-                t)
-    (theme-looper--further-customize)
-    (message "Switched to theme: %s" theme-looper-next-theme)))
+    (theme-looper-enable-theme theme-looper-next-theme)))
 
 (theme-looper-set-theme-set (custom-available-themes))
 
