@@ -38,7 +38,7 @@
 ;;
 ;; Or you can switch to a random theme
 ;;
-;;     (global-set-key (kbd "C-\") 'theme-looper-enable-random-theme)
+;;     (global-set-key (kbd "C-\\") 'theme-looper-enable-random-theme)
 ;;
 ;; You can also set your list of favorite themes
 ;;
