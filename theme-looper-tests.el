@@ -51,7 +51,8 @@
 	  (theme-looper--disable-all-themes)
 	  (should (equal custom-enabled-themes
 			 '())))
-      (load-theme current-theme))))
+      (load-theme current-theme
+                  t))))
 
 (ert-deftest tl-test:getting-theme-indices ()
   (let ((current-theme (car custom-enabled-themes)))
@@ -61,7 +62,8 @@
 				  'tango-dark
 				  'wheatgrass))
 	;Should identify the enabled theme
-	  (load-theme 'wombat)
+	  (load-theme 'wombat
+                      t)
 	  (should (equal (theme-looper--get-current-theme) 
 			 'wombat))
 	;Should identify the next theme position in the list
@@ -72,17 +74,20 @@
 			 'tango-dark))
 	;Should default to first theme as next theme when
 	;current theme is not in the list
-	  (load-theme 'manoj-dark)
+	  (load-theme 'manoj-dark
+                      t)
 	  (should (equal (theme-looper--get-next-theme)
 			 'wombat))
 	;Should loop back to the first theme when
 	;current theme is the last in the list
-	  (load-theme 'wheatgrass)
+	  (load-theme 'wheatgrass
+                      t)
 	  (should (equal (theme-looper--get-next-theme)
 			 'wombat)))
       (setq theme-looper--favorite-themes 
 	    (custom-available-themes))
-      (load-theme current-theme))))
+      (load-theme current-theme
+                  t))))
 
 (ert-deftest tl-test:setting-next-theme ()
   (let ((current-theme (car custom-enabled-themes)))
@@ -92,7 +97,8 @@
 				  'tango-dark
 				  'wheatgrass))
 	;Should select first theme when the selected theme in not in the list
-	  (load-theme 'tango)
+	  (load-theme 'tango
+                      t)
 	  (theme-looper-enable-next-theme)
 	  (should (equal custom-enabled-themes
 			 '(wombat)))
@@ -107,7 +113,8 @@
 			 '(wombat))))
       (setq theme-looper--favorite-themes 
 	    (custom-available-themes))
-      (load-theme current-theme))))
+      (load-theme current-theme
+                  t))))
 
 (ert-deftest tl-test:adding-customization ()
   (let ((current-theme (car custom-enabled-themes))
@@ -122,7 +129,8 @@
 				  'tango-dark
 				  'wheatgrass))
 	;Should apply customizations when specified
-	  (load-theme 'tango)
+	  (load-theme 'tango
+                      t)
 	  (theme-looper-set-customizations (lambda ()
 				   (set-face-attribute 'default nil 
 						       :height 120)))
@@ -135,7 +143,8 @@
 		     2)))
       (setq theme-looper--favorite-themes 
 	    (custom-available-themes))
-      (load-theme current-theme)
+      (load-theme current-theme
+                  t)
       (set-face-attribute 'default nil 
 			  :height current-face-height))))
 

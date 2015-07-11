@@ -68,7 +68,7 @@
 (defvar theme-looper--favorite-themes)
 
 (defun theme-looper--further-customize
-  nil)
+    nil)
 
 ;;;###autoload
 (defun theme-looper-set-theme-set (themes)
@@ -80,7 +80,7 @@
 (defun theme-looper-set-customizations (func)
   "Sets customization to be applied after every theme switch"
   (fset 'theme-looper--further-customize
-	   func))
+        func))
 
 (defun theme-looper--get-current-theme ()
   "Determines the currently enabled theme"
@@ -122,8 +122,8 @@
   (load-theme theme
               t)
   (theme-looper--further-customize)
-    (message "Switched to theme: %s"
-             theme-looper-next-theme))
+  (message "Switched to theme: %s"
+           theme))
 
 ;;;###autoload
 (defun theme-looper-enable-next-theme ()
@@ -137,7 +137,7 @@
   "Enables a random theme from the list"
   (interactive)
   (let ((theme-looper-next-theme (nth (random (length theme-looper--favorite-themes))
-                            theme-looper--favorite-themes)))
+                                      theme-looper--favorite-themes)))
     (theme-looper-enable-theme theme-looper-next-theme)))
 
 (theme-looper-set-theme-set (custom-available-themes))
