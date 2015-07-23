@@ -79,7 +79,7 @@
 ;;;###autoload
 (defun theme-looper-set-customizations (func)
   "Sets customization to be applied after every theme switch"
-  (fset 'theme-looper--further-customize
+  (setq theme-looper--further-customize
         func))
 
 (defun theme-looper--get-current-theme ()
