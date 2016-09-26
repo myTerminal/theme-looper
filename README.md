@@ -50,8 +50,3 @@ Set up your key-bindings:
 Optional: Set additional customization to be applied after every theme switch:
 
     (theme-looper-set-customizations 'my-func)
-
-## Let me know
-Let me know your suggestions on improving 'theme-looper.el' at ismail@teamfluxion.com
-
-Thank you!
