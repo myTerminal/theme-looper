@@ -38,9 +38,15 @@ If you have MELPA or Marmalade added as a repository to your Emacs, you can just
 
 ## Usage
 
-Optional: Set your list of favorite color themes:
+*Optional:* Set the list of your favorite color themes:
 
-    (theme-looper-set-theme-set (list 'deeper-blue 'tango-dark 'tsdh-dark 'wheatgrass))
+    (theme-looper-set-theme-set '(wombat tango-dark wheatgrass))
+
+*Optional:* Set the list of ignored themes:
+
+    (theme-looper-set-ignored-themes '(cobalt))
+
+*Optional:* Set both, in which case only the favorite themes that are not within the ones to be ignored are used.
 
 Set up your key-bindings:
 

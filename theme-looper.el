@@ -42,7 +42,14 @@
 ;;
 ;; You can also set your list of favorite themes
 ;;
-;;     (theme-looper-set-theme-set (list 'wombat 'tango-dark 'wheatgrass))
+;;     (theme-looper-set-theme-set '(wombat tango-dark wheatgrass))
+;;
+;; You can alternatively set the ignored themes
+;;
+;;     (theme-looper-set-ignored-themes '(cobalt))
+;;
+;; Or you can set both, in which case only the favorite themes that are not
+;; within the ones to be ignored are used.
 ;;
 ;; You can set customization to be applied after every theme switch
 ;;
@@ -67,13 +74,22 @@
 
 (defvar theme-looper--favorite-themes)
 
+(defvar theme-looper--ignored-themes
+  nil)
+
 (defun theme-looper--further-customize
     nil)
 
 ;;;###autoload
 (defun theme-looper-set-theme-set (themes)
   "Sets the list of color-themes to cycle thru"
-  (setq theme-looper--favorite-themes 
+  (setq theme-looper--favorite-themes
+	themes))
+
+;;;###autoload
+(defun theme-looper-set-ignored-themes (themes)
+  "Sets the list of color-themes to ignore"
+  (setq theme-looper--ignored-themes
 	themes))
 
 ;;;###autoload
@@ -89,7 +105,13 @@
 (defun theme-looper--get-current-theme-index ()
   "Finds the currently enabled color-theme in the list of color-themes"
   (cl-position (theme-looper--get-current-theme)
-               theme-looper--favorite-themes :test #'equal))
+               (theme-looper--get-looped-themes) :test #'equal))
+
+(defun theme-looper--get-looped-themes ()
+  (cl-remove-if (lambda (theme)
+                  (member theme
+                          theme-looper--ignored-themes))
+                theme-looper--favorite-themes))
 
 (defun theme-looper--get-next-theme-index ()
   "Find the index of the next color-theme in the list, to be moved to"
@@ -99,7 +121,7 @@
 	     'nil)
       0)
      ((equal theme-looper-current-theme-index
-	     (- (length theme-looper--favorite-themes)
+	     (- (length (theme-looper--get-looped-themes))
 		1))
       0)
      ((+ 1
@@ -108,7 +130,7 @@
 (defun theme-looper--get-next-theme ()
   "Determines the next color-theme to be enabled"
   (nth (theme-looper--get-next-theme-index)
-       theme-looper--favorite-themes))
+       (theme-looper--get-looped-themes)))
 
 (defun theme-looper--disable-all-themes ()
   "Disables all the enabled color-themes"
@@ -136,8 +158,8 @@
 (defun theme-looper-enable-random-theme ()
   "Enables a random theme from the list"
   (interactive)
-  (let ((theme-looper-next-theme (nth (random (length theme-looper--favorite-themes))
-                                      theme-looper--favorite-themes)))
+  (let ((theme-looper-next-theme (nth (random (length (theme-looper--get-looped-themes)))
+                                      (theme-looper--get-looped-themes))))
     (theme-looper-enable-theme theme-looper-next-theme)))
 
 (theme-looper-set-theme-set (custom-available-themes))
