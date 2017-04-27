@@ -1,5 +1,6 @@
 # theme-looper
 
+[![MELPA-Stable](http://stable.melpa.org/packages/theme-looper-badge.svg)](http://stable.melpa.org/#/theme-looper)
 [![MELPA](http://melpa.org/packages/theme-looper-badge.svg)](http://melpa.org/#/theme-looper)
 [![Marmalade](https://img.shields.io/badge/marmalade-available-8A2A8B.svg)](https://marmalade-repo.org/packages/theme-looper)  
 [![License](https://img.shields.io/badge/LICENSE-GPL%20v3.0-blue.svg)](https://www.gnu.org/licenses/gpl.html)
@@ -30,9 +31,9 @@ Start the package with:
 
     (require 'theme-looper)
 
-### MELPA / Marmalade
+### MELPA-Stable / MELPA / Marmalade
 
-If you have MELPA or Marmalade added as a repository to your Emacs, you can just install *theme-looper* with
+If you have MELPA-Stable, MELPA or Marmalade added as a repository to your Emacs, you can just install *theme-looper* with
 
     M-x package-install theme-looper RET
 
