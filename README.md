@@ -7,6 +7,8 @@
 
 A color-theme looper for Emacs 24.
 
+![Demo](images/demo.gif)
+
 ## Background
 ### (you can skip to Usage)
 
