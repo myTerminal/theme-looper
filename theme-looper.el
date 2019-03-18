@@ -3,7 +3,7 @@
 ;; This file is not part of Emacs
 
 ;; Author: Mohammed Ismail Ansari <team.terminal@gmail.com>
-;; Version: 1.0
+;; Version: 2.0
 ;; Keywords: convenience, color-themes
 ;; Maintainer: Mohammed Ismail Ansari <team.terminal@gmail.com>
 ;; Created: 2014/03/22
@@ -33,7 +33,7 @@
 ;;
 ;;     (require 'theme-looper)
 ;;
-;; And set a key-binding for cycling thru themes
+;; And set a key-bindings for cycling thru themes
 ;;
 ;;     (global-set-key (kbd "C-|") 'theme-looper-enable-next-theme)
 ;;
@@ -41,20 +41,32 @@
 ;;
 ;;     (global-set-key (kbd "C-\\") 'theme-looper-enable-random-theme)
 ;;
-;; You can also set your list of favorite themes
+;; You can also set a list of your favorite themes
 ;;
-;;     (theme-looper-set-theme-set '(wombat tango-dark wheatgrass))
+;;     (theme-looper-set-favorite-themes '(wombat tango-dark wheatgrass))
 ;;
-;; You can alternatively set the ignored themes
+;; or to use regular expressions
+;;
+;;     (theme-looper-set-favorite-themes-regexp "dark")
+;;
+;; You can alternatively set the themes to be ignored
 ;;
 ;;     (theme-looper-set-ignored-themes '(cobalt))
+;;
+;; or to use regular expressions
+;;
+;;     (theme-looper-set-ignored-themes-regexp "green")
 ;;
 ;; Or you can set both, in which case only the favorite themes that are not
 ;; within the ones to be ignored are used.
 ;;
-;; You can set customization to be applied after every theme switch
+;; If you want to reset your color-theme preferences, simply use
 ;;
-;;     (theme-looper-set-customizations my-func)
+;;     (theme-looper-reset-themes-selection)
+;;
+;; You can set some script to be run after every theme switch
+;;
+;;     (theme-looper-set-post-switch-script my-func)
 ;;
 
 ;;; Commentary:
@@ -82,10 +94,19 @@
     nil)
 
 ;;;###autoload
-(defun theme-looper-set-theme-set (themes)
+(defun theme-looper-set-favorite-themes (themes)
   "Sets the list of color-themes to cycle thru"
   (setq theme-looper--favorite-themes
 	themes))
+
+;;;###autoload
+(defun theme-looper-set-favorite-themes-regexp (regexp)
+  "Sets the list of color-themes to cycle thru, matching a regular expression"
+  (setq theme-looper--favorite-themes
+        (cl-remove-if-not (lambda (theme)
+                            (string-match-p regexp
+                                            (symbol-name theme)))
+                          (custom-available-themes))))
 
 ;;;###autoload
 (defun theme-looper-set-ignored-themes (themes)
@@ -94,10 +115,25 @@
 	themes))
 
 ;;;###autoload
-(defun theme-looper-set-customizations (func)
-  "Sets customization to be applied after every theme switch"
+(defun theme-looper-set-ignored-themes-regexp (regexp)
+  "Sets the list of color-themes to ignore, matching a regular expression"
+  (setq theme-looper--ignored-themes
+        (cl-remove-if-not (lambda (theme)
+                            (string-match-p regexp
+                                            (symbol-name theme)))
+                          (custom-available-themes))))
+
+;;;###autoload
+(defun theme-looper-set-post-switch-script (func)
+  "Sets script to be run after every theme switch"
   (setq theme-looper--further-customize
         func))
+
+;;;###autoload
+(defun theme-looper-reset-themes-selection ()
+  "Resets themes selection back to default"
+  (theme-looper-set-favorite-themes (custom-available-themes))
+  (theme-looper-set-ignored-themes nil))
 
 (defun theme-looper--get-current-theme ()
   "Determines the currently enabled theme"
@@ -163,7 +199,7 @@
                                       (theme-looper--get-looped-themes))))
     (theme-looper-enable-theme theme-looper-next-theme)))
 
-(theme-looper-set-theme-set (custom-available-themes))
+(theme-looper-reset-themes-selection)
 
 (provide 'theme-looper)
 

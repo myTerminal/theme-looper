@@ -7,10 +7,13 @@
 
 A color-theme looper for Emacs 24.
 
+> Note: Breaking changes in version 2
+
 ![Demo](images/demo.gif)
 
 ## Background
-### (you can skip to Usage)
+
+### (You may directly skip to Usage)
 
 Emacs 24 comes with a set of pre-installed color-themes that can be enabled by a simple command like:
 
@@ -40,21 +43,45 @@ If you have MELPA-Stable, MELPA or Marmalade added as a repository to your Emacs
 
 ## Usage
 
-*Optional:* Set the list of your favorite color themes:
-
-    (theme-looper-set-theme-set '(wombat tango-dark wheatgrass))
-
-*Optional:* Set the list of ignored themes:
-
-    (theme-looper-set-ignored-themes '(cobalt))
-
-*Optional:* Set both, in which case only the favorite themes that are not within the ones to be ignored are used.
-
-Set up your key-bindings:
+### Set key-bindings to switch themes like a breeze
 
     (global-set-key (kbd "C-|") 'theme-looper-enable-next-theme)
     (global-set-key (kbd "C-\") 'theme-looper-enable-random-theme)
 
-Optional: Set additional customization to be applied after every theme switch:
+### *Optional:* Set a list of your favorite color themes:
 
-    (theme-looper-set-customizations 'my-func)
+By specifying a particular set of themes
+
+    (theme-looper-set-favorite-themes '(wombat tango-dark wheatgrass))
+
+or using a regular expression
+
+    (theme-looper-set-favorite-themes-regexp "dark")
+
+### *Optional:* Set a list of ignored themes:
+
+By specifying a particular set of themes
+
+    (theme-looper-set-ignored-themes '(cobalt))
+
+or using a regular expression
+
+    (theme-looper-set-ignored-themes-regexp "green")
+
+### *Optional:* Set both
+
+In this case, only the favorite themes that are not within the ones to be ignored are used.
+
+### More
+
+If you want to reset your color-theme preferences, simply use
+
+    (theme-looper-reset-themes-selection)
+
+You can set some script to be run after every theme switch
+
+    (theme-looper-set-post-switch-script 'my-func)
+
+## Acknowledgments
+
+Thanks to [protonpopsicle](https://github.com/protonpopsicle), [zombiefungus](https://github.com/zombiefungus) and [romildo](https://github.com/romildo) for their valuable inputs to suggest changes and enhancements.
