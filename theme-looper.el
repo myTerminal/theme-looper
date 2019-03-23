@@ -3,7 +3,7 @@
 ;; This file is not part of Emacs
 
 ;; Author: Mohammed Ismail Ansari <team.terminal@gmail.com>
-;; Version: 2.0
+;; Version: 2.1
 ;; Keywords: convenience, color-themes
 ;; Maintainer: Mohammed Ismail Ansari <team.terminal@gmail.com>
 ;; Created: 2014/03/22
@@ -35,7 +35,8 @@
 ;;
 ;; And set a key-bindings for cycling thru themes
 ;;
-;;     (global-set-key (kbd "C-|") 'theme-looper-enable-next-theme)
+;;     (global-set-key (kbd "C-}") 'theme-looper-enable-next-theme)
+;;     (global-set-key (kbd "C-{") 'theme-looper-previous-next-theme)
 ;;
 ;; Or you can switch to a random theme
 ;;
@@ -161,12 +162,31 @@
 	     (- (length (theme-looper--get-looped-themes))
 		1))
       0)
-     ((+ 1
-	 theme-looper-current-theme-index)))))
+     ((+ theme-looper-current-theme-index
+         1)))))
 
 (defun theme-looper--get-next-theme ()
   "Determines the next color-theme to be enabled"
   (nth (theme-looper--get-next-theme-index)
+       (theme-looper--get-looped-themes)))
+
+(defun theme-looper--get-previous-theme-index ()
+  "Find the index of the previous color-theme in the list, to be moved to"
+  (let ((theme-looper-current-theme-index (theme-looper--get-current-theme-index)))
+    (cond
+     ((equal theme-looper-current-theme-index
+	     'nil)
+      0)
+     ((equal theme-looper-current-theme-index
+	     0)
+      (- (length (theme-looper--get-looped-themes))
+         1))
+     ((- theme-looper-current-theme-index
+         1)))))
+
+(defun theme-looper--get-previous-theme ()
+  "Determines the previous color-theme to be enabled"
+  (nth (theme-looper--get-previous-theme-index)
        (theme-looper--get-looped-themes)))
 
 (defun theme-looper--disable-all-themes ()
@@ -190,6 +210,13 @@
   (interactive)
   (let ((theme-looper-next-theme (theme-looper--get-next-theme)))
     (theme-looper-enable-theme theme-looper-next-theme)))
+
+;;;###autoload
+(defun theme-looper-enable-previous-theme ()
+  "Enables the previous color-theme in the list"
+  (interactive)
+  (let ((theme-looper-previous-theme (theme-looper--get-previous-theme)))
+    (theme-looper-enable-theme theme-looper-previous-theme)))
 
 ;;;###autoload
 (defun theme-looper-enable-random-theme ()

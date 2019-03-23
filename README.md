@@ -45,7 +45,8 @@ If you have MELPA-Stable, MELPA or Marmalade added as a repository to your Emacs
 
 ### Set key-bindings to switch themes like a breeze
 
-    (global-set-key (kbd "C-|") 'theme-looper-enable-next-theme)
+    (global-set-key (kbd "C-}") 'theme-looper-enable-next-theme)
+    (global-set-key (kbd "C-{") 'theme-looper-enable-previous-theme)
     (global-set-key (kbd "C-\") 'theme-looper-enable-random-theme)
 
 ### *Optional:* Set a list of your favorite color themes:
@@ -84,4 +85,4 @@ You can set some script to be run after every theme switch
 
 ## Acknowledgments
 
-Thanks to [protonpopsicle](https://github.com/protonpopsicle), [zombiefungus](https://github.com/zombiefungus) and [romildo](https://github.com/romildo) for their valuable inputs to suggest changes and enhancements.
+Thanks to [protonpopsicle](https://github.com/protonpopsicle), [zombiefungus](https://github.com/zombiefungus), [romildo](https://github.com/romildo) and [4goodapp](https://github.com/4goodapp) for their valuable inputs to suggest changes and enhancements.
