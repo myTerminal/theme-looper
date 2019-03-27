@@ -91,7 +91,7 @@
 (defvar theme-looper--ignored-themes
   nil)
 
-(defun theme-looper--further-customize
+(defun theme-looper--post-switch
     nil)
 
 ;;;###autoload
@@ -127,7 +127,7 @@
 ;;;###autoload
 (defun theme-looper-set-post-switch-script (func)
   "Sets script to be run after every theme switch"
-  (setq theme-looper--further-customize
+  (setq theme-looper--post-switch
         func))
 
 ;;;###autoload
@@ -143,7 +143,8 @@
 (defun theme-looper--get-current-theme-index ()
   "Finds the currently enabled color-theme in the list of color-themes"
   (cl-position (theme-looper--get-current-theme)
-               (theme-looper--get-looped-themes) :test #'equal))
+               (theme-looper--get-looped-themes)
+               :test #'equal))
 
 (defun theme-looper--get-looped-themes ()
   (cl-remove-if (lambda (theme)
@@ -153,16 +154,16 @@
 
 (defun theme-looper--get-next-theme-index ()
   "Find the index of the next color-theme in the list, to be moved to"
-  (let ((theme-looper-current-theme-index (theme-looper--get-current-theme-index)))
+  (let ((current-theme-index (theme-looper--get-current-theme-index)))
     (cond
-     ((equal theme-looper-current-theme-index
+     ((equal current-theme-index
 	     'nil)
       0)
-     ((equal theme-looper-current-theme-index
+     ((equal current-theme-index
 	     (- (length (theme-looper--get-looped-themes))
 		1))
       0)
-     ((+ theme-looper-current-theme-index
+     ((+ current-theme-index
          1)))))
 
 (defun theme-looper--get-next-theme ()
@@ -172,16 +173,16 @@
 
 (defun theme-looper--get-previous-theme-index ()
   "Find the index of the previous color-theme in the list, to be moved to"
-  (let ((theme-looper-current-theme-index (theme-looper--get-current-theme-index)))
+  (let ((current-theme-index (theme-looper--get-current-theme-index)))
     (cond
-     ((equal theme-looper-current-theme-index
+     ((equal current-theme-index
 	     'nil)
       0)
-     ((equal theme-looper-current-theme-index
+     ((equal current-theme-index
 	     0)
       (- (length (theme-looper--get-looped-themes))
          1))
-     ((- theme-looper-current-theme-index
+     ((- current-theme-index
          1)))))
 
 (defun theme-looper--get-previous-theme ()
@@ -200,7 +201,7 @@
   (theme-looper--disable-all-themes)
   (load-theme theme
               t)
-  (theme-looper--further-customize)
+  (theme-looper--post-switch)
   (message "Switched to theme: %s"
            theme))
 
@@ -208,23 +209,23 @@
 (defun theme-looper-enable-next-theme ()
   "Enables the next color-theme in the list"
   (interactive)
-  (let ((theme-looper-next-theme (theme-looper--get-next-theme)))
-    (theme-looper-enable-theme theme-looper-next-theme)))
+  (let ((next-theme (theme-looper--get-next-theme)))
+    (theme-looper-enable-theme next-theme)))
 
 ;;;###autoload
 (defun theme-looper-enable-previous-theme ()
   "Enables the previous color-theme in the list"
   (interactive)
-  (let ((theme-looper-previous-theme (theme-looper--get-previous-theme)))
-    (theme-looper-enable-theme theme-looper-previous-theme)))
+  (let ((previous-theme (theme-looper--get-previous-theme)))
+    (theme-looper-enable-theme previous-theme)))
 
 ;;;###autoload
 (defun theme-looper-enable-random-theme ()
   "Enables a random theme from the list"
   (interactive)
-  (let ((theme-looper-next-theme (nth (random (length (theme-looper--get-looped-themes)))
+  (let ((some-theme (nth (random (length (theme-looper--get-looped-themes)))
                                       (theme-looper--get-looped-themes))))
-    (theme-looper-enable-theme theme-looper-next-theme)))
+    (theme-looper-enable-theme some-theme)))
 
 (theme-looper-reset-themes-selection)
 
