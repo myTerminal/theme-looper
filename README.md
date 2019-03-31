@@ -15,7 +15,7 @@ A convenience package to switch themes in Emacs.
 
 ### (You may directly skip to Usage)
 
-Emacs 24 comes with a set of pre-installed color-themes that can be enabled by a simple command like:
+Emacs 24 and later comes with a set of pre-installed color-themes that can be enabled by a simple command like:
 
     M-x load-theme RET wombat
     

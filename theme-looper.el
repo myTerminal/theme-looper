@@ -72,14 +72,14 @@
 
 ;;; Commentary:
 
-;;     You can use this package to cycle thru the available themes in Emacs 24
-;;     with a key-binding of your choice. Just a key combination to switch to
-;;     the next theme.
+;;     You can use this package to cycle through color themes in Emacs with a
+;;     shortcut. Select your favorite themes, unfavorite thmes and key-bindings
+;;     to switch color themes in style!
 ;;
 ;;  Overview of features:
 ;;
-;;     o   Automatically cycle thru the available color themes
-;;     o   Provides an option to select a list of your favorite color themes
+;;     o   Loop though available color themes conveniently
+;;     o   Narrow down the list of your favorite color themes
 ;;
 
 ;;; Code:
