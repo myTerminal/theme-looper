@@ -3,7 +3,7 @@
 ;; This file is not part of Emacs
 
 ;; Author: Mohammed Ismail Ansari <team.terminal@gmail.com>
-;; Version: 2.1
+;; Version: 2.2
 ;; Keywords: convenience, color-themes
 ;; Maintainer: Mohammed Ismail Ansari <team.terminal@gmail.com>
 ;; Created: 2014/03/22
@@ -195,29 +195,65 @@
   (mapcar 'disable-theme
 	  custom-enabled-themes))
 
+(defun theme-looper--nth-cyclic (index collection)
+  (cond ((< index
+            0) (theme-looper--nth-cyclic (+ index
+                                            (length collection))
+            collection))
+        ((> index
+            (1- (length collection))) (theme-looper--nth-cyclic (- index
+                                                                   (length collection))
+            collection))
+        (t (nth index
+                collection))))
+
+(defun theme-looper--print-theme-path (theme)
+  (let ((theme-index (cl-position theme
+                                  (theme-looper--get-looped-themes)
+                                  :test #'equal)))
+    (message (concat "theme-looper: "
+                     (symbol-name (theme-looper--nth-cyclic (- theme-index 2)
+                                                            (theme-looper--get-looped-themes)))
+                     " | "
+                     (symbol-name (theme-looper--nth-cyclic (- theme-index 1)
+                                                            (theme-looper--get-looped-themes)))
+                     " | "
+                     (propertize (symbol-name theme)
+                                 'face
+                                 '(:inverse-video t))
+                     " | "
+                     (symbol-name (theme-looper--nth-cyclic (+ theme-index 1)
+                                                            (theme-looper--get-looped-themes)))
+                     " | "
+                     (symbol-name (theme-looper--nth-cyclic (+ theme-index 2)
+                                                            (theme-looper--get-looped-themes)))))))
+
 ;;;###autoload
-(defun theme-looper-enable-theme (theme)
+(defun theme-looper-enable-theme (theme print-theme-path-p)
   "Enables the specified color-theme"
   (theme-looper--disable-all-themes)
   (load-theme theme
               t)
   (theme-looper--post-switch)
-  (message "Switched to theme: %s"
-           theme))
+  (cond (print-theme-path-p (theme-looper--print-theme-path theme))
+        (t (message "theme-looper: %s"
+                    theme))))
 
 ;;;###autoload
 (defun theme-looper-enable-next-theme ()
   "Enables the next color-theme in the list"
   (interactive)
   (let ((next-theme (theme-looper--get-next-theme)))
-    (theme-looper-enable-theme next-theme)))
+    (theme-looper-enable-theme next-theme
+                               t)))
 
 ;;;###autoload
 (defun theme-looper-enable-previous-theme ()
   "Enables the previous color-theme in the list"
   (interactive)
   (let ((previous-theme (theme-looper--get-previous-theme)))
-    (theme-looper-enable-theme previous-theme)))
+    (theme-looper-enable-theme previous-theme
+                               t)))
 
 ;;;###autoload
 (defun theme-looper-enable-random-theme ()
@@ -225,7 +261,8 @@
   (interactive)
   (let ((some-theme (nth (random (length (theme-looper--get-looped-themes)))
                                       (theme-looper--get-looped-themes))))
-    (theme-looper-enable-theme some-theme)))
+    (theme-looper-enable-theme some-theme
+                               nil)))
 
 (theme-looper-reset-themes-selection)
 
