@@ -94,6 +94,9 @@
 (defun theme-looper--post-switch
     nil)
 
+(defvar theme-looper--themes-map-separator
+  " | ")
+
 ;;;###autoload
 (defun theme-looper-set-favorite-themes (themes)
   "Sets the list of color-themes to cycle thru"
@@ -214,17 +217,17 @@
     (message (concat "theme-looper: "
                      (symbol-name (theme-looper--nth-cyclic (- theme-index 2)
                                                             (theme-looper--get-looped-themes)))
-                     " | "
+                     theme-looper--themes-map-separator
                      (symbol-name (theme-looper--nth-cyclic (- theme-index 1)
                                                             (theme-looper--get-looped-themes)))
-                     " | "
+                     theme-looper--themes-map-separator
                      (propertize (symbol-name theme)
                                  'face
                                  '(:inverse-video t))
-                     " | "
+                     theme-looper--themes-map-separator
                      (symbol-name (theme-looper--nth-cyclic (+ theme-index 1)
                                                             (theme-looper--get-looped-themes)))
-                     " | "
+                     theme-looper--themes-map-separator
                      (symbol-name (theme-looper--nth-cyclic (+ theme-index 2)
                                                             (theme-looper--get-looped-themes)))))))
 
