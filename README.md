@@ -19,7 +19,7 @@ Emacs 24 and later comes with a set of pre-installed color-themes that can be en
 
     M-x load-theme RET wombat
     
-The above command enables (rather activates) 'wombat' theme. However, when you get lazy like I did, you need something like theme-looper.el. So, if you have a list of your favorite color-themes and you want to cycle thru them with simple key-strokes, you've come to the right place.
+The above command enables (rather activates) 'wombat' theme. However, when you get lazy as I did, you need something like theme-looper.el. So, if you have a list of your favorite color-themes and you want to cycle thru them with simple keystrokes, you've come to the right place.
 
 ## Installation
 
