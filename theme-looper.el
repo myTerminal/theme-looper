@@ -3,7 +3,7 @@
 ;; This file is not part of Emacs
 
 ;; Author: Mohammed Ismail Ansari <team.terminal@gmail.com>
-;; Version: 2.2
+;; Version: 2.3
 ;; Keywords: convenience, color-themes
 ;; Maintainer: Mohammed Ismail Ansari <team.terminal@gmail.com>
 ;; Created: 2014/03/22
@@ -42,6 +42,10 @@
 ;;
 ;;     (global-set-key (kbd "C-\\") 'theme-looper-enable-random-theme)
 ;;
+;; Or you can choose from a list of themes using ivy's completion interface
+;;
+;;     (global-set-key (kbd "C-|") 'theme-looper-select-theme)
+;;
 ;; You can also set a list of your favorite themes
 ;;
 ;;     (theme-looper-set-favorite-themes '(wombat tango-dark wheatgrass))
@@ -79,7 +83,7 @@
 ;;  Overview of features:
 ;;
 ;;     o   Loop though available color themes conveniently
-;;     o   Narrow down the list of your favorite color themes
+;;     o   Narrow down the list of color themes to only the ones you like
 ;;
 
 ;;; Code:
@@ -266,6 +270,18 @@
                                       (theme-looper--get-looped-themes))))
     (theme-looper-enable-theme some-theme
                                nil)))
+
+;;;###autoload
+(defun theme-looper-select-theme ()
+  "Lets user select a theme from a list of favorite ones rendered using ivy API"
+  (interactive)
+  (if (featurep 'ivy)
+      (ivy-read "theme-looper: "
+                (theme-looper--get-looped-themes)
+                :action (lambda (th)
+                          (theme-looper-enable-theme (intern th)
+                                                     t)))
+    (message "theme-looper: package 'ivy' is not installed!")))
 
 (theme-looper-reset-themes-selection)
 
