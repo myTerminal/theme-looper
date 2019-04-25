@@ -281,6 +281,12 @@
   (if (featurep 'ivy)
       (ivy-read "theme-looper: "
                 (theme-looper--get-looped-themes)
+                :keymap (let ((map (make-sparse-keymap)))
+                          (define-key map (kbd "<up>") 'ivy-previous-line-and-call)
+                          (define-key map (kbd "<down>") 'ivy-next-line-and-call)
+                          (define-key map (kbd "C-p") 'ivy-previous-line-and-call)
+                          (define-key map (kbd "C-n") 'ivy-next-line-and-call)
+                          map)
                 :action (lambda (th)
                           (theme-looper-enable-theme (intern th))))
     (message "theme-looper: package 'ivy' is not installed!")))
