@@ -235,41 +235,44 @@
                      (symbol-name (theme-looper--nth-cyclic (+ theme-index 2)
                                                             (theme-looper--get-looped-themes)))))))
 
+(defun theme-looper-enable-theme-with-map (theme)
+  (theme-looper-enable-theme theme)
+  (theme-looper--print-theme-path theme))
+
+(defun theme-looper-enable-theme-with-log (theme)
+  (theme-looper-enable-theme theme)
+  (message "theme-looper: %s"
+           theme))
+
 ;;;###autoload
-(defun theme-looper-enable-theme (theme print-theme-path-p)
+(defun theme-looper-enable-theme (theme)
   "Enables the specified color-theme"
   (theme-looper--disable-all-themes)
   (load-theme theme
               t)
-  (theme-looper--post-switch)
-  (cond (print-theme-path-p (theme-looper--print-theme-path theme))
-        (t (message "theme-looper: %s"
-                    theme))))
+  (theme-looper--post-switch))
 
 ;;;###autoload
 (defun theme-looper-enable-next-theme ()
   "Enables the next color-theme in the list"
   (interactive)
   (let ((next-theme (theme-looper--get-next-theme)))
-    (theme-looper-enable-theme next-theme
-                               t)))
+    (theme-looper-enable-theme-with-map next-theme)))
 
 ;;;###autoload
 (defun theme-looper-enable-previous-theme ()
   "Enables the previous color-theme in the list"
   (interactive)
   (let ((previous-theme (theme-looper--get-previous-theme)))
-    (theme-looper-enable-theme previous-theme
-                               t)))
+    (theme-looper-enable-theme-with-map previous-theme)))
 
 ;;;###autoload
 (defun theme-looper-enable-random-theme ()
   "Enables a random theme from the list"
   (interactive)
   (let ((some-theme (nth (random (length (theme-looper--get-looped-themes)))
-                                      (theme-looper--get-looped-themes))))
-    (theme-looper-enable-theme some-theme
-                               nil)))
+                         (theme-looper--get-looped-themes))))
+    (theme-looper-enable-theme-with-log some-theme)))
 
 ;;;###autoload
 (defun theme-looper-select-theme ()
@@ -279,8 +282,7 @@
       (ivy-read "theme-looper: "
                 (theme-looper--get-looped-themes)
                 :action (lambda (th)
-                          (theme-looper-enable-theme (intern th)
-                                                     t)))
+                          (theme-looper-enable-theme (intern th))))
     (message "theme-looper: package 'ivy' is not installed!")))
 
 (theme-looper-reset-themes-selection)
