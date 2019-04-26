@@ -3,7 +3,7 @@
 ;; This file is not part of Emacs
 
 ;; Author: Mohammed Ismail Ansari <team.terminal@gmail.com>
-;; Version: 2.3
+;; Version: 2.4
 ;; Keywords: convenience, color-themes
 ;; Maintainer: Mohammed Ismail Ansari <team.terminal@gmail.com>
 ;; Created: 2014/03/22
@@ -100,6 +100,9 @@
 
 (defvar theme-looper--themes-map-separator
   " | ")
+
+(defvar theme-looper--initial-theme
+  nil)
 
 ;;;###autoload
 (defun theme-looper-set-favorite-themes (themes)
@@ -278,18 +281,29 @@
 (defun theme-looper-select-theme ()
   "Lets user select a theme from a list of favorite ones rendered using ivy API"
   (interactive)
+  (setq theme-looper--initial-theme
+        (car custom-enabled-themes))
   (if (featurep 'ivy)
       (ivy-read "theme-looper: "
                 (theme-looper--get-looped-themes)
-                :keymap (let ((map (make-sparse-keymap)))
-                          (define-key map (kbd "<up>") 'ivy-previous-line-and-call)
-                          (define-key map (kbd "<down>") 'ivy-next-line-and-call)
-                          (define-key map (kbd "C-p") 'ivy-previous-line-and-call)
-                          (define-key map (kbd "C-n") 'ivy-next-line-and-call)
-                          map)
+                :update-fn 'theme-looper--preview-theme
                 :action (lambda (th)
-                          (theme-looper-enable-theme (intern th))))
+                          (theme-looper-enable-theme (intern th)))
+                :unwind 'theme-looper--restore-theme)
     (message "theme-looper: package 'ivy' is not installed!")))
+
+(defun theme-looper--preview-theme ()
+  "Temporarily enables current theme to provide a preview during theme selection"
+  (let* ((current-selection (ivy-state-current ivy-last))
+         (th (intern current-selection)))
+    (if (member th
+                (theme-looper--get-looped-themes))
+        (ivy-call))))
+
+(defun theme-looper--restore-theme ()
+  "Restores the previously selected theme, before starting to interactively selecting one"
+  (when theme-looper--initial-theme
+    (theme-looper-enable-theme theme-looper--initial-theme)))
 
 (theme-looper-reset-themes-selection)
 
