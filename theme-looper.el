@@ -281,11 +281,21 @@
 (defun theme-looper-select-theme ()
   "Lets user select a theme from a list of favorite ones rendered using ivy API"
   (interactive)
+  (theme-looper--start-theme-selector (theme-looper--get-looped-themes)))
+
+;;;###autoload
+(defun theme-looper-select-theme-from-all ()
+  "Lets user select a theme from a list of all available themes rendered using ivy API"
+  (interactive)
+  (theme-looper--start-theme-selector (custom-available-themes)))
+
+(defun theme-looper--start-theme-selector (themes-collection)
+  "Lets user select a theme from a list of specified themes rendered using ivy API"
   (setq theme-looper--initial-theme
         (car custom-enabled-themes))
   (if (featurep 'ivy)
       (ivy-read "theme-looper: "
-                (theme-looper--get-looped-themes)
+                themes-collection
                 :update-fn 'theme-looper--preview-theme
                 :action (lambda (th)
                           (theme-looper-enable-theme (intern th)))
@@ -297,7 +307,7 @@
   (let* ((current-selection (ivy-state-current ivy-last))
          (th (intern current-selection)))
     (if (member th
-                (theme-looper--get-looped-themes))
+                (custom-available-themes))
         (ivy-call))))
 
 (defun theme-looper--restore-theme ()

@@ -49,10 +49,11 @@ If you have MELPA-Stable, MELPA or Marmalade added as a repository to your Emacs
     (global-set-key (kbd "C-{") 'theme-looper-enable-previous-theme)
     (global-set-key (kbd "C-\\") 'theme-looper-enable-random-theme)
     (global-set-key (kbd "C-|") 'theme-looper-select-theme)
+    (global-set-key (kbd "C-M-|") 'theme-looper-select-theme-from-all)
 
 By the name, functions `theme-looper-enable-next-theme` and `theme-looper-enable-previous-theme` let you move through the list of your favorite color themes. When you have no clue for which theme you would like to be loaded or want to see a random theme every time you start Emacs, you can use `theme-looper-enable-random-theme`.
 
-`theme-looper-select-theme` provides a list of themes to select from using [ivy](https://github.com/abo-abo/swiper/blob/master/ivy.el)'s completion interface. It also tries to provide live feedback according to themes being highlighted, even before one is selected from the list.
+`theme-looper-select-theme` provides a list of themes to select from using [ivy](https://github.com/abo-abo/swiper/blob/master/ivy.el)'s completion interface. It also tries to provide live feedback according to themes being highlighted, even before one is selected from the list. If you feel like exploring themes outside of the collection of your favorite themes, you can use `theme-looper-select-theme-from-all` and select one from all available themes.
 
 ### *Optional:* Set a list of your favorite color themes:
 
