@@ -296,6 +296,7 @@
   (if (featurep 'ivy)
       (ivy-read "theme-looper: "
                 themes-collection
+                :preselect (symbol-name (theme-looper--get-current-theme))
                 :update-fn 'theme-looper--preview-theme
                 :action (lambda (th)
                           (theme-looper-enable-theme (intern th)))
