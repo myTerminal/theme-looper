@@ -7,7 +7,7 @@
 ;; Keywords: convenience, color-themes
 ;; Maintainer: Mohammed Ismail Ansari <team.terminal@gmail.com>
 ;; Created: 2014/03/22
-;; Package-Requires: ((cl-lib "0.5"))
+;; Package-Requires: ((emacs "24") (cl-lib "0.5"))
 ;; Description: Loop thru the available color-themes with a key-binding
 ;; URL: http://ismail.teamfluxion.com
 ;; Compatibility: Emacs24
