@@ -294,13 +294,14 @@
   (setq theme-looper--initial-theme
         (car custom-enabled-themes))
   (if (featurep 'ivy)
-      (ivy-read "theme-looper: "
-                themes-collection
-                :preselect (symbol-name (theme-looper--get-current-theme))
-                :update-fn 'theme-looper--preview-theme
-                :action (lambda (th)
-                          (theme-looper-enable-theme (intern th)))
-                :unwind 'theme-looper--restore-theme)
+      (let ((ivy-wrap t))
+        (ivy-read "theme-looper: "
+                  themes-collection
+                  :preselect (symbol-name (theme-looper--get-current-theme))
+                  :update-fn 'theme-looper--preview-theme
+                  :action (lambda (th)
+                            (theme-looper-enable-theme (intern th)))
+                  :unwind 'theme-looper--restore-theme))
     (message "theme-looper: package 'ivy' is not installed!")))
 
 (defun theme-looper--preview-theme ()
