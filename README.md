@@ -95,4 +95,11 @@ You can set hook functions to be run after every theme switch
 
 ## Acknowledgments
 
-Thanks to [protonpopsicle](https://github.com/protonpopsicle), [zombiefungus](https://github.com/zombiefungus), [romildo](https://github.com/romildo) and [4goodapp](https://github.com/4goodapp) for their valuable inputs to suggest changes and enhancements.
+Thanks to the below people for their valuable feedback, suggestions, help, and enhancements (in chronological order of contributions):
+
+- [syohex](https://github.com/syohex)
+- [protonpopsicle](https://github.com/protonpopsicle)
+- [divagant-martian](https://github.com/divagant-martian)
+- [romildo](https://github.com/romildo)
+- [4goodapp](https://github.com/4goodapp)
+- [fishyfriend](https://github.com/fishyfriend)
