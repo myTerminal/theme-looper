@@ -3,7 +3,7 @@
 ;; This file is not part of Emacs
 
 ;; Author: Mohammed Ismail Ansari <team.terminal@gmail.com>
-;; Version: 2.4
+;; Version: 2.5
 ;; Keywords: convenience, color-themes
 ;; Maintainer: Mohammed Ismail Ansari <team.terminal@gmail.com>
 ;; Created: 2014/03/22
