@@ -51,8 +51,8 @@
 	      (theme-looper--disable-all-themes)
 	      (should (equal custom-enabled-themes
 			             '())))
-      (load-theme current-theme
-                  t))))
+      (when current-theme
+        (load-theme current-theme t)))))
 
 (ert-deftest tl-test:getting-theme-indices ()
   (let ((current-theme (car custom-enabled-themes)))
@@ -86,8 +86,8 @@
 			             'wombat)))
       (setq theme-looper--favorite-themes
 	        (custom-available-themes))
-      (load-theme current-theme
-                  t))))
+      (when current-theme
+        (load-theme current-theme t)))))
 
 (ert-deftest tl-test:setting-next-theme ()
   (let ((current-theme (car custom-enabled-themes)))
@@ -113,8 +113,9 @@
 			             '(wombat))))
       (setq theme-looper--favorite-themes
 	        (custom-available-themes))
-      (load-theme current-theme
-                  t))))
+      (when current-theme
+        (load-theme current-theme
+                    t)))))
 
 (ert-deftest tl-test:adding-customization ()
   (let ((current-theme (car custom-enabled-themes))
@@ -122,9 +123,8 @@
 					                         :height)))
     (unwind-protect
 	    (progn
-          (message (concatenate 'string
-                                "current-face-height: "
-                                (number-to-string current-face-height)))
+          (message (concat "current-face-height: "
+                           (number-to-string current-face-height)))
 	      (theme-looper-set-favorite-themes (list 'wombat
                                                   'tango-dark
                                                   'wheatgrass))
@@ -135,16 +135,15 @@
                                                  (set-face-attribute 'default nil
                                                                      :height 120)))
 	      (theme-looper-enable-next-theme)
-	      (message (concatenate 'string
-                                "found face-height: "
-                                (number-to-string (face-attribute 'default :height))))
+	      (message (concat "found face-height: "
+                           (number-to-string (face-attribute 'default :height))))
 	      (should (< (abs  (- (face-attribute 'default :height)
 			                  120))
 		             2)))
       (setq theme-looper--favorite-themes
 	        (custom-available-themes))
-      (load-theme current-theme
-                  t)
+      (when current-theme
+        (load-theme current-theme t))
       (set-face-attribute 'default nil
 			              :height current-face-height))))
 
