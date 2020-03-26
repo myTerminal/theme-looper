@@ -144,4 +144,15 @@
         (load-theme current-theme t))
       (set-face-background 'default current-face-background))))
 
+(ert-deftest tl-test:emacs-defaults ()
+  (let ((current-theme (car custom-enabled-themes)))
+    (unwind-protect
+        (progn
+          (theme-looper-enable-theme '*default*)
+          (should (not custom-enabled-themes))
+          (should (eq (theme-looper--get-current-theme)
+                      '*default*)))
+      (when current-theme
+        (load-theme current-theme t)))))
+
 ;;; theme-looper-tests.el ends here

@@ -73,6 +73,9 @@
 ;;
 ;;     (add-hook 'theme-looper-post-switch-hook 'my-func)
 ;;
+;; The special symbol `*default*' represents Emacs defaults (no theme)
+;;
+;;    (theme-looper-set-favorite-themes '(cobalt wheatgrass *default*))
 
 ;;; Commentary:
 
@@ -105,6 +108,11 @@
   nil)
 
 ;;;###autoload
+(defun theme-looper-available-themes ()
+  "Lists the themes available for selection"
+  (cons '*default* (custom-available-themes)))
+
+;;;###autoload
 (defun theme-looper-set-favorite-themes (themes)
   "Sets the list of color-themes to cycle thru"
   (setq theme-looper--favorite-themes
@@ -117,7 +125,7 @@
         (cl-remove-if-not (lambda (theme)
                             (string-match-p regexp
                                             (symbol-name theme)))
-                          (custom-available-themes))))
+                          (theme-looper-available-themes))))
 
 ;;;###autoload
 (defun theme-looper-set-ignored-themes (themes)
@@ -132,17 +140,17 @@
         (cl-remove-if-not (lambda (theme)
                             (string-match-p regexp
                                             (symbol-name theme)))
-                          (custom-available-themes))))
+                          (theme-looper-available-themes))))
 
 ;;;###autoload
 (defun theme-looper-reset-themes-selection ()
   "Resets themes selection back to default"
-  (theme-looper-set-favorite-themes (custom-available-themes))
+  (theme-looper-set-favorite-themes (theme-looper-available-themes))
   (theme-looper-set-ignored-themes nil))
 
 (defun theme-looper--get-current-theme ()
   "Determines the currently enabled theme"
-  (car custom-enabled-themes))
+  (or (car custom-enabled-themes) '*default*))
 
 (defun theme-looper--get-current-theme-index ()
   "Finds the currently enabled color-theme in the list of color-themes"
@@ -243,10 +251,11 @@
 
 ;;;###autoload
 (defun theme-looper-enable-theme (theme)
-  "Enables the specified color-theme"
+  "Enables the specified color-theme
+Pass `*default*' to select Emacs defaults"
   (theme-looper--disable-all-themes)
-  (load-theme theme
-              t)
+  (when (not (eq theme '*default*))
+    (load-theme theme t))
   (run-hooks 'theme-looper-post-switch-hook))
 
 ;;;###autoload
@@ -281,12 +290,12 @@
 (defun theme-looper-select-theme-from-all ()
   "Lets user select a theme from a list of all available themes rendered using ivy API"
   (interactive)
-  (theme-looper--start-theme-selector (custom-available-themes)))
+  (theme-looper--start-theme-selector (theme-looper-available-themes)))
 
 (defun theme-looper--start-theme-selector (themes-collection)
   "Lets user select a theme from a list of specified themes rendered using ivy API"
   (setq theme-looper--initial-theme
-        (car custom-enabled-themes))
+        (theme-looper--get-current-theme))
   (if (featurep 'ivy)
       (let ((ivy-wrap t))
         (ivy-read "theme-looper: "
@@ -303,7 +312,7 @@
   (let* ((current-selection (ivy-state-current ivy-last))
          (th (intern current-selection)))
     (if (member th
-                (custom-available-themes))
+                (theme-looper-available-themes))
         (ivy-call))))
 
 (defun theme-looper--restore-theme ()
