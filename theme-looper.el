@@ -77,7 +77,7 @@
 ;;; Commentary:
 
 ;;     You can use this package to cycle through color themes in Emacs with a
-;;     shortcut. Select your favorite themes, unfavorite thmes and key-bindings
+;;     shortcut. Select your favorite themes, unfavorite themes and key-bindings
 ;;     to switch color themes in style!
 ;;
 ;;  Overview of features:
