@@ -75,7 +75,7 @@
 ;;
 ;; The special symbol `*default*' represents Emacs defaults (no theme)
 ;;
-;;    (theme-looper-set-favorite-themes '(cobalt wheatgrass *default*))
+;;     (theme-looper-set-favorite-themes '(cobalt wheatgrass *default*))
 
 ;;; Commentary:
 
@@ -99,7 +99,7 @@
   nil)
 
 (defvar theme-looper-post-switch-hook nil
-  "Hook that runs after selecting a theme.")
+  "Hook that runs after switch.")
 
 (defvar theme-looper--themes-map-separator
   " | ")
@@ -110,13 +110,14 @@
 ;;;###autoload
 (defun theme-looper-available-themes ()
   "Lists the themes available for selection"
-  (cons '*default* (custom-available-themes)))
+  (cons '*default*
+        (custom-available-themes)))
 
 ;;;###autoload
 (defun theme-looper-set-favorite-themes (themes)
   "Sets the list of color-themes to cycle thru"
   (setq theme-looper--favorite-themes
-	themes))
+	    themes))
 
 ;;;###autoload
 (defun theme-looper-set-favorite-themes-regexp (regexp)
@@ -131,7 +132,7 @@
 (defun theme-looper-set-ignored-themes (themes)
   "Sets the list of color-themes to ignore"
   (setq theme-looper--ignored-themes
-	themes))
+	    themes))
 
 ;;;###autoload
 (defun theme-looper-set-ignored-themes-regexp (regexp)
@@ -169,11 +170,11 @@
   (let ((current-theme-index (theme-looper--get-current-theme-index)))
     (cond
      ((equal current-theme-index
-	     'nil)
+	         'nil)
       0)
      ((equal current-theme-index
-	     (- (length (theme-looper--get-looped-themes))
-		1))
+	         (- (length (theme-looper--get-looped-themes))
+		        1))
       0)
      ((+ current-theme-index
          1)))))
@@ -188,10 +189,10 @@
   (let ((current-theme-index (theme-looper--get-current-theme-index)))
     (cond
      ((equal current-theme-index
-	     'nil)
+	         'nil)
       0)
      ((equal current-theme-index
-	     0)
+	         0)
       (- (length (theme-looper--get-looped-themes))
          1))
      ((- current-theme-index
@@ -205,7 +206,7 @@
 (defun theme-looper--disable-all-themes ()
   "Disables all the enabled color-themes"
   (mapcar 'disable-theme
-	  custom-enabled-themes))
+	      custom-enabled-themes))
 
 (defun theme-looper--nth-cyclic (index collection)
   (cond ((< index
