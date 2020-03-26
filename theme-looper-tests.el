@@ -119,32 +119,29 @@
 
 (ert-deftest tl-test:adding-customization ()
   (let ((current-theme (car custom-enabled-themes))
-	    (current-face-height (face-attribute 'default
-					                         :height)))
+	    (current-face-background (face-background 'default)))
     (unwind-protect
 	    (progn
-          (message (concat "current-face-height: "
-                           (number-to-string current-face-height)))
-	      (theme-looper-set-favorite-themes (list 'wombat
+          (set-face-background 'default "red")
+          (message (concat "current face-background: red"))
+          (theme-looper-set-favorite-themes (list 'wombat
                                                   'tango-dark
                                                   'wheatgrass))
           ;;Should apply customizations when specified
-	      (load-theme 'tango
+          (load-theme 'tango
                       t)
 	      (theme-looper-set-post-switch-script (lambda ()
-                                                 (set-face-attribute 'default nil
-                                                                     :height 120)))
+                                                 (set-face-background 'default
+                                                                      "green")))
 	      (theme-looper-enable-next-theme)
-	      (message (concat "found face-height: "
-                           (number-to-string (face-attribute 'default :height))))
-	      (should (< (abs  (- (face-attribute 'default :height)
-			                  120))
-		             2)))
+	      (message (concat "found face-background: "
+                           (face-background 'default)))
+	      (should (equal (face-background 'default) "green")))
       (setq theme-looper--favorite-themes
 	        (custom-available-themes))
+      (setq theme-looper-post-switch-hook nil)
       (when current-theme
         (load-theme current-theme t))
-      (set-face-attribute 'default nil
-			              :height current-face-height))))
+      (set-face-background 'default current-face-background))))
 
 ;;; theme-looper-tests.el ends here
