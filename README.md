@@ -19,7 +19,7 @@ Emacs 24 and later comes with a set of pre-installed color-themes that can be en
 
     M-x load-theme RET wombat
     
-The above command enables (rather activates) 'wombat' theme. However, when you get lazy as I did, you need something like theme-looper.el. So, if you have a list of your favorite color-themes and you want to cycle thru them with simple keystrokes, you've come to the right place.
+The above command enables (rather activates) 'wombat' theme. However, when you get lazy as I did, you need something like theme-looper.el. So, if you have a list of your favorite color-themes and you want to cycle through them with simple keystrokes, you've come to the right place.
 
 ## Installation
 
@@ -65,6 +65,10 @@ or using a regular expression
 
     (theme-looper-set-favorite-themes-regexp "dark")
 
+The special symbol `*default*' represents Emacs defaults (no theme)
+
+    (theme-looper-set-favorite-themes '(cobalt wheatgrass *default*))
+
 ### *Optional:* Set a list of ignored themes:
 
 By specifying a particular set of themes
@@ -85,9 +89,9 @@ If you want to reset your color-theme preferences, simply use
 
     (theme-looper-reset-themes-selection)
 
-You can set some script to be run after every theme switch
+You can set hook functions to be run after every theme switch
 
-    (theme-looper-set-post-switch-script 'my-func)
+    (add-hook 'theme-looper-post-switch-hook 'my-func)
 
 ## Acknowledgments
 

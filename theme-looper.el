@@ -54,6 +54,10 @@
 ;;
 ;;     (theme-looper-set-favorite-themes-regexp "dark")
 ;;
+;; The special symbol `*default*' represents Emacs defaults (no theme)
+;;
+;;     (theme-looper-set-favorite-themes '(cobalt wheatgrass *default*))
+;;
 ;; You can alternatively set the themes to be ignored
 ;;
 ;;     (theme-looper-set-ignored-themes '(cobalt))
@@ -73,9 +77,6 @@
 ;;
 ;;     (add-hook 'theme-looper-post-switch-hook 'my-func)
 ;;
-;; The special symbol `*default*' represents Emacs defaults (no theme)
-;;
-;;     (theme-looper-set-favorite-themes '(cobalt wheatgrass *default*))
 
 ;;; Commentary:
 
