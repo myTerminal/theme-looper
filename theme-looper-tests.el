@@ -130,9 +130,9 @@
           ;;Should apply customizations when specified
           (load-theme 'tango
                       t)
-	      (theme-looper-set-post-switch-script (lambda ()
-                                                 (set-face-background 'default
-                                                                      "green")))
+	      (add-hook 'theme-looper-post-switch-hook
+                    (lambda ()
+                      (set-face-background 'default "green")))
 	      (theme-looper-enable-next-theme)
 	      (message (concat "found face-background: "
                            (face-background 'default)))

@@ -69,9 +69,9 @@
 ;;
 ;;     (theme-looper-reset-themes-selection)
 ;;
-;; You can set some script to be run after every theme switch
+;; You can set hook functions to be run after every theme switch
 ;;
-;;     (theme-looper-set-post-switch-script my-func)
+;;     (add-hook 'theme-looper-post-switch-hook 'my-func)
 ;;
 
 ;;; Commentary:
@@ -95,8 +95,8 @@
 (defvar theme-looper--ignored-themes
   nil)
 
-(defun theme-looper--post-switch
-    nil)
+(defvar theme-looper-post-switch-hook nil
+  "Hook that runs after selecting a theme.")
 
 (defvar theme-looper--themes-map-separator
   " | ")
@@ -133,12 +133,6 @@
                             (string-match-p regexp
                                             (symbol-name theme)))
                           (custom-available-themes))))
-
-;;;###autoload
-(defun theme-looper-set-post-switch-script (func)
-  "Sets script to be run after every theme switch"
-  (setq theme-looper--post-switch
-        func))
 
 ;;;###autoload
 (defun theme-looper-reset-themes-selection ()
@@ -253,7 +247,7 @@
   (theme-looper--disable-all-themes)
   (load-theme theme
               t)
-  (theme-looper--post-switch))
+  (run-hooks 'theme-looper-post-switch-hook))
 
 ;;;###autoload
 (defun theme-looper-enable-next-theme ()
