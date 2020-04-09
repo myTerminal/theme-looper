@@ -256,8 +256,10 @@
   "Enables the specified color-theme
 Pass `*default*' to select Emacs defaults"
   (theme-looper--disable-all-themes)
-  (when (not (eq theme '*default*))
-    (load-theme theme t))
+  (condition-case nil
+      (when (not (eq theme '*default*))
+        (load-theme theme t))
+    (error nil))
   (run-hooks 'theme-looper-post-switch-hook))
 
 ;;;###autoload
