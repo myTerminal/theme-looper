@@ -81,7 +81,7 @@ or using a regular expression
 
 ### *Optional:* Set both
 
-In this case, only the favorite themes that are not within the ones to be ignored are used.
+In this case, only the favorite themes that are not among the ones to be ignored are used.
 
 ### More
 

@@ -67,7 +67,7 @@
 ;;     (theme-looper-set-ignored-themes-regexp "green")
 ;;
 ;; Or you can set both, in which case only the favorite themes that are not
-;; within the ones to be ignored are used.
+;; among the ones to be ignored are used.
 ;;
 ;; If you want to reset your color-theme preferences, simply use
 ;;
