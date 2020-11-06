@@ -108,7 +108,6 @@
 (defvar theme-looper--initial-theme
   nil)
 
-;;;###autoload
 (defun theme-looper-available-themes ()
   "Lists the themes available for selection"
   (cons '*default*
