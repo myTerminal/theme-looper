@@ -3,7 +3,7 @@
 ;; This file is not part of Emacs
 
 ;; Author: Mohammed Ismail Ansari <team.terminal@gmail.com>
-;; Version: 2.6
+;; Version: 2.7
 ;; Keywords: convenience, color-themes
 ;; Maintainer: Mohammed Ismail Ansari <team.terminal@gmail.com>
 ;; Created: 2014/03/22
@@ -72,6 +72,10 @@
 ;; If you want to reset your color-theme preferences, simply use
 ;;
 ;;     (theme-looper-reset-themes-selection)
+;;
+;; In order to reload the currently activated color-theme, you can use
+;;
+;;     (theme-looper-reload-current-theme)
 ;;
 ;; You can set hook functions to be run after every theme switch
 ;;
@@ -282,6 +286,12 @@ Pass `*default*' to select Emacs defaults"
   (let ((some-theme (nth (random (length (theme-looper--get-looped-themes)))
                          (theme-looper--get-looped-themes))))
     (theme-looper-enable-theme-with-log some-theme)))
+
+;;;###autoload
+(defun theme-looper-reload-current-theme ()
+  "Reloads the currently activated theme"
+  (interactive)
+  (theme-looper-enable-theme (theme-looper--get-current-theme)))
 
 ;;;###autoload
 (defun theme-looper-select-theme ()

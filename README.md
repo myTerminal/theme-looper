@@ -18,7 +18,7 @@ A convenience package to switch themes in Emacs.
 Emacs 24 and later comes with a set of pre-installed color-themes that can be enabled by a simple command like:
 
     M-x load-theme RET wombat
-    
+
 The above command enables (rather activates) 'wombat' theme. However, when you get lazy as I did, you need something like theme-looper.el. So, if you have a list of your favorite color-themes and you want to cycle through them with simple keystrokes, you've come to the right place.
 
 ## Installation
@@ -28,7 +28,7 @@ The above command enables (rather activates) 'wombat' theme. However, when you g
 Save the file 'theme-looper.el' to disk and add the directory containing it to 'load-path' using a command in your '.emacs' file like:
 
     (add-to-list 'load-path "~/.emacs.d/")
-    
+
 The above line assumes that you've placed the file into the Emacs directory '.emacs.d'.
 
 Start the package with:
@@ -89,13 +89,17 @@ If you want to reset your color-theme preferences, simply use
 
     (theme-looper-reset-themes-selection)
 
+In order to reload the currently activated color-theme, you can use
+
+    (theme-looper-reload-current-theme)
+
 You can set hook functions to be run after every theme switch
 
     (add-hook 'theme-looper-post-switch-hook 'my-func)
 
 ## Acknowledgments
 
-Thanks to the below people for their valuable feedback, suggestions, help, and enhancements (in chronological order of contributions):
+Thanks to the below people for their valuable feedback, suggestions, help, and enhancements (in chronological order of their contributions):
 
 - [syohex](https://github.com/syohex)
 - [protonpopsicle](https://github.com/protonpopsicle)
@@ -103,3 +107,4 @@ Thanks to the below people for their valuable feedback, suggestions, help, and e
 - [romildo](https://github.com/romildo)
 - [4goodapp](https://github.com/4goodapp)
 - [fishyfriend](https://github.com/fishyfriend)
+- [kwstat](https://github.com/kwstat)
