@@ -113,19 +113,19 @@
   nil)
 
 (defun theme-looper-available-themes ()
-  "Lists the themes available for selection"
+  "Lists the themes available for selection."
   (cons '*default*
         (custom-available-themes)))
 
 ;;;###autoload
 (defun theme-looper-set-favorite-themes (themes)
-  "Sets the list of color-themes to cycle thru"
+  "Sets the list of color-themes to cycle through."
   (setq theme-looper--favorite-themes
 	    themes))
 
 ;;;###autoload
 (defun theme-looper-set-favorite-themes-regexp (regexp)
-  "Sets the list of color-themes to cycle thru, matching a regular expression"
+  "Sets the list of color-themes to cycle thru, matching a regular expression."
   (setq theme-looper--favorite-themes
         (cl-remove-if-not (lambda (theme)
                             (string-match-p regexp
@@ -134,13 +134,13 @@
 
 ;;;###autoload
 (defun theme-looper-set-ignored-themes (themes)
-  "Sets the list of color-themes to ignore"
+  "Sets the list of color-themes to ignore."
   (setq theme-looper--ignored-themes
 	    themes))
 
 ;;;###autoload
 (defun theme-looper-set-ignored-themes-regexp (regexp)
-  "Sets the list of color-themes to ignore, matching a regular expression"
+  "Sets the list of color-themes to ignore, matching a regular expression."
   (setq theme-looper--ignored-themes
         (cl-remove-if-not (lambda (theme)
                             (string-match-p regexp
@@ -149,189 +149,173 @@
 
 ;;;###autoload
 (defun theme-looper-reset-themes-selection ()
-  "Resets themes selection back to default"
+  "Resets themes selection back to default."
   (theme-looper-set-favorite-themes (theme-looper-available-themes))
   (theme-looper-set-ignored-themes nil))
 
 (defun theme-looper--get-current-theme ()
-  "Determines the currently enabled theme"
+  "Determines the currently enabled theme."
   (or (car custom-enabled-themes) '*default*))
 
 (defun theme-looper--get-current-theme-index ()
-  "Finds the currently enabled color-theme in the list of color-themes"
+  "Finds the currently enabled color-theme in the list of color-themes."
   (cl-position (theme-looper--get-current-theme)
                (theme-looper--get-looped-themes)
                :test #'equal))
 
 (defun theme-looper--get-looped-themes ()
+  "Get themes to be looped through."
   (cl-remove-if (lambda (theme)
                   (member theme
                           theme-looper--ignored-themes))
                 theme-looper--favorite-themes))
 
-(defun theme-looper--get-next-theme-index ()
-  "Find the index of the next color-theme in the list, to be moved to"
-  (let ((current-theme-index (theme-looper--get-current-theme-index)))
-    (cond
-     ((equal current-theme-index
-	         'nil)
-      0)
-     ((equal current-theme-index
-	         (- (length (theme-looper--get-looped-themes))
-		        1))
-      0)
-     ((+ current-theme-index
-         1)))))
-
-(defun theme-looper--get-next-theme ()
-  "Determines the next color-theme to be enabled"
-  (nth (theme-looper--get-next-theme-index)
-       (theme-looper--get-looped-themes)))
-
-(defun theme-looper--get-previous-theme-index ()
-  "Find the index of the previous color-theme in the list, to be moved to"
-  (let ((current-theme-index (theme-looper--get-current-theme-index)))
-    (cond
-     ((equal current-theme-index
-	         'nil)
-      0)
-     ((equal current-theme-index
-	         0)
-      (- (length (theme-looper--get-looped-themes))
-         1))
-     ((- current-theme-index
-         1)))))
-
-(defun theme-looper--get-previous-theme ()
-  "Determines the previous color-theme to be enabled"
-  (nth (theme-looper--get-previous-theme-index)
-       (theme-looper--get-looped-themes)))
-
-(defun theme-looper--disable-all-themes ()
-  "Disables all the enabled color-themes"
-  (mapcar 'disable-theme
-	      custom-enabled-themes))
-
-(defun theme-looper--nth-cyclic (index collection)
-  (cond ((< index
-            0) (theme-looper--nth-cyclic (+ index
-                                            (length collection))
-            collection))
-        ((> index
-            (1- (length collection))) (theme-looper--nth-cyclic (- index
-                                                                   (length collection))
-            collection))
-        (t (nth index
-                collection))))
-
-(defun theme-looper--print-theme-path (theme)
-  (let ((theme-index (cl-position theme
-                                  (theme-looper--get-looped-themes)
-                                  :test #'equal)))
-    (message (concat "theme-looper: "
-                     (symbol-name (theme-looper--nth-cyclic (- theme-index 2)
-                                                            (theme-looper--get-looped-themes)))
-                     theme-looper--themes-map-separator
-                     (symbol-name (theme-looper--nth-cyclic (- theme-index 1)
-                                                            (theme-looper--get-looped-themes)))
-                     theme-looper--themes-map-separator
-                     (propertize (symbol-name theme)
-                                 'face
-                                 '(:inverse-video t))
-                     theme-looper--themes-map-separator
-                     (symbol-name (theme-looper--nth-cyclic (+ theme-index 1)
-                                                            (theme-looper--get-looped-themes)))
-                     theme-looper--themes-map-separator
-                     (symbol-name (theme-looper--nth-cyclic (+ theme-index 2)
-                                                            (theme-looper--get-looped-themes)))))))
-
-(defun theme-looper-enable-theme-with-map (theme)
-  (theme-looper-enable-theme theme)
-  (theme-looper--print-theme-path theme))
-
-(defun theme-looper-enable-theme-with-log (theme)
-  (theme-looper-enable-theme theme)
-  (message "theme-looper: %s"
-           theme))
-
 ;;;###autoload
 (defun theme-looper-enable-theme (theme)
-  "Enables the specified color-theme
-Pass `*default*' to select Emacs defaults"
-  (theme-looper--disable-all-themes)
-  (condition-case nil
-      (when (not (eq theme '*default*))
-        (load-theme theme t))
-    (error nil))
-  (run-hooks 'theme-looper-post-switch-hook))
+  "Enables the specified color-theme.
+Pass `*default*' to select Emacs defaults."
+  (cl-flet* ((disable-all-themes ()
+                                 (mapcar 'disable-theme
+	                                     custom-enabled-themes)))
+    (disable-all-themes)
+    (condition-case nil
+        (when (not (eq theme '*default*))
+          (load-theme theme t))
+      (error nil))
+    (run-hooks 'theme-looper-post-switch-hook)))
+
+(defun theme-looper--enable-theme-with-map (theme)
+  "Enables a theme with displayed map."
+  (cl-flet* ((nth-cyclic (index collection)
+                         (cond ((< index
+                                   0) (nth-cyclic (+ index
+                                                     (length collection))
+                                   collection))
+                               ((> index
+                                   (1- (length collection))) (nth-cyclic (- index
+                                                                            (length collection))
+                                   collection))
+                               (t (nth index
+                                       collection))))
+             (print-theme-path (theme)
+                               (let ((theme-index (cl-position theme
+                                                               (theme-looper--get-looped-themes)
+                                                               :test #'equal)))
+                                 (message (concat "theme-looper: "
+                                                  (symbol-name (nth-cyclic (- theme-index 2)
+                                                                           (theme-looper--get-looped-themes)))
+                                                  theme-looper--themes-map-separator
+                                                  (symbol-name (nth-cyclic (- theme-index 1)
+                                                                           (theme-looper--get-looped-themes)))
+                                                  theme-looper--themes-map-separator
+                                                  (propertize (symbol-name theme)
+                                                              'face
+                                                              '(:inverse-video t))
+                                                  theme-looper--themes-map-separator
+                                                  (symbol-name (nth-cyclic (+ theme-index 1)
+                                                                           (theme-looper--get-looped-themes)))
+                                                  theme-looper--themes-map-separator
+                                                  (symbol-name (nth-cyclic (+ theme-index 2)
+                                                                           (theme-looper--get-looped-themes))))))))
+    (theme-looper-enable-theme theme)
+    (print-theme-path theme)))
 
 ;;;###autoload
 (defun theme-looper-enable-next-theme ()
-  "Enables the next color-theme in the list"
+  "Enables the next color-theme in the list."
   (interactive)
-  (let ((next-theme (theme-looper--get-next-theme)))
-    (theme-looper-enable-theme-with-map next-theme)))
+  (cl-flet* ((get-next-theme-index ()
+                                   (let ((current-theme-index (theme-looper--get-current-theme-index)))
+                                     (cond
+                                      ((equal current-theme-index
+	                                          'nil)
+                                       0)
+                                      ((equal current-theme-index
+	                                          (- (length (theme-looper--get-looped-themes))
+		                                         1))
+                                       0)
+                                      ((+ current-theme-index
+                                          1)))))
+             (get-next-theme ()
+                             (nth (get-next-theme-index)
+                                  (theme-looper--get-looped-themes))))
+    (let ((next-theme (get-next-theme)))
+      (theme-looper--enable-theme-with-map next-theme))))
 
 ;;;###autoload
 (defun theme-looper-enable-previous-theme ()
-  "Enables the previous color-theme in the list"
+  "Enables the previous color-theme in the list."
   (interactive)
-  (let ((previous-theme (theme-looper--get-previous-theme)))
-    (theme-looper-enable-theme-with-map previous-theme)))
+  (cl-flet* ((get-previous-theme-index ()
+                                       (let ((current-theme-index (theme-looper--get-current-theme-index)))
+                                         (cond
+                                          ((equal current-theme-index
+	                                              'nil)
+                                           0)
+                                          ((equal current-theme-index
+	                                              0)
+                                           (- (length (theme-looper--get-looped-themes))
+                                              1))
+                                          ((- current-theme-index
+                                              1)))))
+             (get-previous-theme ()
+                                 (nth (get-previous-theme-index)
+                                      (theme-looper--get-looped-themes))))
+    (let ((previous-theme (get-previous-theme)))
+      (theme-looper--enable-theme-with-map previous-theme))))
 
 ;;;###autoload
 (defun theme-looper-enable-random-theme ()
-  "Enables a random theme from the list"
+  "Enables a random theme from the list."
   (interactive)
-  (let ((some-theme (nth (random (length (theme-looper--get-looped-themes)))
-                         (theme-looper--get-looped-themes))))
-    (theme-looper-enable-theme-with-log some-theme)))
+  (cl-flet* ((enable-theme-with-log (theme)
+                                    (theme-looper-enable-theme theme)
+                                    (message "theme-looper: %s"
+                                             theme)))
+    (let ((some-theme (nth (random (length (theme-looper--get-looped-themes)))
+                           (theme-looper--get-looped-themes))))
+      (enable-theme-with-log some-theme))))
 
 ;;;###autoload
 (defun theme-looper-reload-current-theme ()
-  "Reloads the currently activated theme"
+  "Reloads the currently activated theme."
   (interactive)
   (theme-looper-enable-theme (theme-looper--get-current-theme)))
 
+(defun theme-looper--start-theme-selector (themes-collection)
+  "Lets user select a theme from a list of specified themes rendered using ivy API."
+  (cl-flet* ((preview-theme ()
+                            (let* ((current-selection (ivy-state-current ivy-last))
+                                   (th (intern current-selection)))
+                              (if (member th
+                                          (theme-looper-available-themes))
+                                  (ivy-call)))))
+    (setq theme-looper--initial-theme
+          (theme-looper--get-current-theme))
+    (if (featurep 'ivy)
+        (let ((ivy-wrap t))
+          (ivy-read "theme-looper: "
+                    themes-collection
+                    :preselect (symbol-name (theme-looper--get-current-theme))
+                    :update-fn #'preview-theme
+                    :action (lambda (th)
+                              (theme-looper-enable-theme (intern th)))
+                    :unwind (lambda ()
+                              (when theme-looper--initial-theme
+                                (theme-looper-enable-theme theme-looper--initial-theme)))))
+      (message "theme-looper: package 'ivy' is not installed!"))))
+
 ;;;###autoload
 (defun theme-looper-select-theme ()
-  "Lets user select a theme from a list of favorite ones rendered using ivy API"
+  "Lets user select a theme from a list of favorite ones rendered using ivy API."
   (interactive)
   (theme-looper--start-theme-selector (theme-looper--get-looped-themes)))
 
 ;;;###autoload
 (defun theme-looper-select-theme-from-all ()
-  "Lets user select a theme from a list of all available themes rendered using ivy API"
+  "Lets user select a theme from a list of all available themes rendered using ivy API."
   (interactive)
   (theme-looper--start-theme-selector (theme-looper-available-themes)))
-
-(defun theme-looper--start-theme-selector (themes-collection)
-  "Lets user select a theme from a list of specified themes rendered using ivy API"
-  (setq theme-looper--initial-theme
-        (theme-looper--get-current-theme))
-  (if (featurep 'ivy)
-      (let ((ivy-wrap t))
-        (ivy-read "theme-looper: "
-                  themes-collection
-                  :preselect (symbol-name (theme-looper--get-current-theme))
-                  :update-fn 'theme-looper--preview-theme
-                  :action (lambda (th)
-                            (theme-looper-enable-theme (intern th)))
-                  :unwind 'theme-looper--restore-theme))
-    (message "theme-looper: package 'ivy' is not installed!")))
-
-(defun theme-looper--preview-theme ()
-  "Temporarily enables current theme to provide a preview during theme selection"
-  (let* ((current-selection (ivy-state-current ivy-last))
-         (th (intern current-selection)))
-    (if (member th
-                (theme-looper-available-themes))
-        (ivy-call))))
-
-(defun theme-looper--restore-theme ()
-  "Restores the previously selected theme, before starting to interactively selecting one"
-  (when theme-looper--initial-theme
-    (theme-looper-enable-theme theme-looper--initial-theme)))
 
 (theme-looper-reset-themes-selection)
 
