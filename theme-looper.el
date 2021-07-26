@@ -303,7 +303,9 @@ Pass `*default*' to select Emacs defaults."
                     :unwind (lambda ()
                               (when theme-looper--initial-theme
                                 (theme-looper-enable-theme theme-looper--initial-theme)))))
-      (message "theme-looper: package 'ivy' is not installed!"))))
+      (theme-looper-enable-theme (intern (ido-completing-read "theme-looper: "
+                                                              (mapcar #'symbol-name
+                                                                      themes-collection)))))))
 
 ;;;###autoload
 (defun theme-looper-select-theme ()
