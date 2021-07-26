@@ -42,7 +42,8 @@
 ;;
 ;;     (global-set-key (kbd "C-\\") 'theme-looper-enable-random-theme)
 ;;
-;; Or you can choose from a list of themes using ivy's completion interface
+;; Or you can choose from a list of themes through a completion interface
+;; which could be either ivy or ido
 ;;
 ;;     (global-set-key (kbd "C-|") 'theme-looper-select-theme)
 ;;
@@ -283,7 +284,7 @@ Pass `*default*' to select Emacs defaults."
   (theme-looper-enable-theme (theme-looper--get-current-theme)))
 
 (defun theme-looper--start-theme-selector (themes-collection)
-  "Lets user select a theme from a list of specified themes rendered using ivy API."
+  "Lets user select a theme from a list of specified themes rendered using a completion interface."
   (cl-flet* ((preview-theme ()
                             (let* ((current-selection (ivy-state-current ivy-last))
                                    (th (intern current-selection)))
@@ -309,13 +310,13 @@ Pass `*default*' to select Emacs defaults."
 
 ;;;###autoload
 (defun theme-looper-select-theme ()
-  "Lets user select a theme from a list of favorite ones rendered using ivy API."
+  "Lets user select a theme from a list of favorite ones rendered using a completion interface."
   (interactive)
   (theme-looper--start-theme-selector (theme-looper--get-looped-themes)))
 
 ;;;###autoload
 (defun theme-looper-select-theme-from-all ()
-  "Lets user select a theme from a list of all available themes rendered using ivy API."
+  "Lets user select a theme from a list of all available themes rendered a completion interface."
   (interactive)
   (theme-looper--start-theme-selector (theme-looper-available-themes)))
 
