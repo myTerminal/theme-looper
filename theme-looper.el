@@ -187,7 +187,7 @@ Pass `*default*' to select Emacs defaults."
 
 (defun theme-looper--enable-theme-with-map (theme)
   "Enables a theme with displayed map."
-  (cl-flet* ((nth-cyclic (index collection)
+  (cl-labels ((nth-cyclic (index collection)
                          (cond ((< index
                                    0) (nth-cyclic (+ index
                                                      (length collection))
