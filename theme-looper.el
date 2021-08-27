@@ -1,4 +1,4 @@
-;;; theme-looper.el --- Loop through the available color-themes
+;;; theme-looper.el --- A package for switching themes in Emacs interactively
 
 ;; This file is not part of Emacs
 

@@ -5,7 +5,7 @@
 [![Marmalade](https://img.shields.io/badge/marmalade-available-8A2A8B.svg)](https://marmalade-repo.org/packages/theme-looper)  
 [![License](https://img.shields.io/badge/LICENSE-GPL%20v3.0-blue.svg)](https://www.gnu.org/licenses/gpl.html)
 
-A convenience package to switch themes in Emacs.
+A package for switching themes in Emacs interactively.
 
 > Note: Breaking changes in version 2
 
